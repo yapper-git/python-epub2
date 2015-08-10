@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="BookId">
+    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+
+        {#- titles #}
+        <dc:title>{{ title }}</dc:title>
+        {%- for title in metadata.titles %}
+        <dc:title>{{ title }}</dc:title>
+        {%- endfor %}
+
+        {#- creators #}
+        {%- for creator in metadata.creators %}
+        {{ '<' }}dc:creator
+            {%- if creator['role'] %} opf:role="{{ creator['role'] }}"{% endif %}
+            {%- if creator['file-as'] %} opf:file-as="{{ creator['file-as'] }}"{% endif -%}
+        {{ '>' }}{{ creator['name'] }}</dc:creator>
+        {%- endfor %}
+
+        {#- subject #}
+        {%- for subject in metadata.subjects %}
+        <dc:subject>{{ subject }}</dc:subject>
+        {%- endfor %}
+
+        {#- description #}
+        {%- if metadata.description %}
+        <dc:description>{{ metadata.description }}</dc:description>
+        {%- endif %}
+
+        {#- publisher #}
+        {%- if metadata.publisher %}
+        <dc:publisher>{{ metadata.publisher }}</dc:publisher>
+        {%- endif %}
+
+        {#- contributors #}
+        {%- for contributor in metadata.contributors %}
+        {{ '<' }}dc:contributor
+            {%- if contributor["role"] %} opf:role="{{ contributor['role'] }}"{% endif %}
+            {%- if contributor["file-as"] %} opf:file-as="{{ contributor['file-as'] }}"{% endif -%}
+        {{ '>' }}{{ contributor['name'] }}</dc:contributor>
+        {%- endfor %}
+
+        {#- dates #}
+        {%- for date in metadata.dates %}
+        {%- if date['event'] %}
+        <dc:date opf:event="{{ date['event'] }}">{{ date['date'] }}</dc:date>
+        {%- else %}
+        <dc:date>{{ date['date'] }}</dc:date>
+        {%- endif %}
+        {%- endfor %}
+
+        {#- type #}
+        {%- if metadata.type %}
+        <dc:type>{{ metadata.type }}</dc:type>
+        {%- endif %}
+
+        {#- format #}
+        {%- if metadata.format %}
+        <dc:format>{{ metadata.format }}</dc:format>
+        {%- endif %}
+
+        {#- identifiers #}
+        <dc:identifier id="BookId">{{ identifier }}</dc:identifier>
+        {%- for identifier in metadata.identifiers %}
+        {{ '<' }}dc:identifier
+            {%- if identifier['id'] %} id="{{ identifier['id'] }}"{% endif %}
+            {%- if identifier["scheme"] %} opf:scheme="{{ identifier['scheme'] }}"{% endif -%}
+        {{ '>' }}{{ identifier['content'] }}</dc:identifier>
+        {%- endfor %}
+
+        {#- source #}
+        {%- if metadata.source %}
+        <dc:source>{{ metadata.source }}</dc:source>
+        {%- endif %}
+
+        {#- languages #}
+        {%- for language in metadata.languages %}
+        <dc:language>{{ language }}</dc:language>
+        {%- endfor %}
+
+        {#- relation #}
+        {%- if metadata.relation %}
+        <dc:relation>{{ metadata.relation }}</dc:relation>
+        {%- endif %}
+
+        {#- coverage #}
+        {%- if metadata.coverage %}
+        <dc:coverage>{{ metadata.coverage }}</dc:coverage>
+        {%- endif %}
+
+        {#- rights #}
+        {%- if metadata.rights %}
+        <dc:rights>{{ metadata.rights }}</dc:rights>
+        {%- endif %}
+
+        {#- metas #}
+        {%- for meta in metadata.metas %}
+        <meta name="{{ meta['name'] }}" content="{{ meta['content'] }}"/>
+        {%- endfor %}
+    </metadata>
+    <manifest>
+        {%- for item in manifest %}
+        <item id="{{ item['id'] }}" href="{{ item['href'] }}" media-type="{{ item['media-type'] }}"/>
+        {%- endfor %}
+    </manifest>
+    <spine toc="ncx">
+        {%- for itemref in spine %}
+        <itemref idref="{{ itemref['idref'] }}"{% if not itemref['linear'] %} linear="no"{% endif %}/>
+        {%- endfor %}
+    </spine>
+    {%- if guide %}
+    <guide>
+        {%- for reference in guide %}
+        <reference type="{{ reference['type'] }}" title="{{ reference['title'] }}" href="{{ reference['href'] }}"/>
+        {%- endfor %}
+    </guide>
+    {%- endif %}
+</package>
