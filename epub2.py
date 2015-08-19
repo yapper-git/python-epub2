@@ -204,7 +204,7 @@ class EpubMetadata:
 class EpubNavPoint:
     """EpubNavPoint represents a NavPoint element for contents"""
 
-    def __init__(self, id, label, source, children=None):
+    def __init__(self, id=None, label=None, source=None, children=None):
         self.id = id
         self.label = label
         self.source = source
