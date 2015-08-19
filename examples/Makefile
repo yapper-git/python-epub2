@@ -1,6 +1,8 @@
 EPUB_FILES   = $(patsubst %.py,%.epub,$(wildcard *.py))
 EPUB_FOLDERS = $(patsubst %.py,%.epub-FILES,$(wildcard *.py))
 
+export PYTHONPATH := $(realpath ..)
+
 all: $(EPUB_FILES) $(EPUB_FOLDERS)
 
 %.epub: %.py
