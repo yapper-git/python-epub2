@@ -10,12 +10,12 @@
     <docTitle><text>{{ title }}</text></docTitle>
     <navMap>
         {%- for navpoint in navpoints recursive %}
-        <navPoint id="{{ navpoint.id }}">
+        <navPoint id="{{ navpoint.id }}" playOrder="{{ navpoint.play_order }}">
             <navLabel><text>{{ navpoint.label }}</text></navLabel>
             <content src="{{ navpoint.source }}"/>
             {%- if navpoint.children -%}
-            {{ loop(navpoint.children) }}
-            {%- endif -%}
+            {{ loop(navpoint.children)|indent }}
+            {%- endif %}
         </navPoint>
         {%- endfor %}
     </navMap>

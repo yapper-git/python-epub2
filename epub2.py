@@ -103,6 +103,7 @@ class EpubBuilder:
         self._zip.writestr("OEBPS/content.opf", template_render)
 
     def _write_ncx_file(self):
+        self._reorder_playorder()
         template = self.env.get_template("toc.ncx")
         template_render = template.render(
             uid=self.identifier,
@@ -125,6 +126,16 @@ class EpubBuilder:
                 self._max_depth = self._current_depth
             self._depth_recursive(child_navpoint.children)
             self._current_depth -= 1
+
+    def _reorder_playorder(self):
+        self._play_order = 1
+        self._reorder_playorder_recursive(self.navpoints)
+
+    def _reorder_playorder_recursive(self, navpoints):
+        for navpoint in navpoints:
+            navpoint.play_order = self._play_order
+            self._play_order += 1
+            self._reorder_playorder_recursive(navpoint.children)
 
 
 class EpubMetadata:
